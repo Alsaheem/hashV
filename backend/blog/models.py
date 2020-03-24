@@ -14,6 +14,7 @@ class Category(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=200)
     category = models.ForeignKey(Category,related_name='posts',on_delete=models.CASCADE)
+    post_image_url = models.URLField()
     description = models.TextField()
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now_add=True)

@@ -32,7 +32,14 @@ class Query(graphene.ObjectType):
     def resolve_post(self,info,id):
         return Post.objects.get(id=id)
 
-    def resolve_posts(root,info, **kwargs):
+    def resolve_posts(root,info,search=None, **kwargs):
+        if search:
+            filter =  (
+              Q(title__icontains=search) |
+              Q(description__icontains=search) |
+              Q(posted_by__username__icontains=search)
+            )
+            return Post.objects.filter(filter)
         return Post.objects.all()
 
     def resolve_myPosts(self,info):

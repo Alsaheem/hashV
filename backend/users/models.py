@@ -9,3 +9,6 @@ class Profile(models.Model):
     bio = models.TextField(max_length=200)
     profile_pic = models.FileField(upload_to="images",null=True,blank=True)
     url = models.URLField()
+
+    def __str__(self):
+      return '{} - Profile'.format(self.user.username)

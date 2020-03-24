@@ -13,13 +13,13 @@ class CreatePost(graphene.Mutation):
         title = graphene.String(required=True)
         description = graphene.String(required=True)
         category_id = graphene.Int(required=True)
+        post_image_url = graphene.String()
 
 
-    def mutate(self,info,title,description,category_id):
-        post = Post(title=title,description=description,category_id=category_id)
-        user.set_password(password)
-        user.save()
-        return CreateUser(user=user)
+    def mutate(self,info,title,description,category_id,post_image_url):
+        post = Post(title=title,description=description,category_id=category_id,post_image_url=post_image_url)
+        post.save()
+        return CreatePost(post=post)
 
 
 class CreateCategory(graphene.Mutation):
@@ -48,7 +48,7 @@ class CreateLike(graphene.Mutation):
             raise GraphQLError('You need to be logged in to like this post')
         try:
             post = Post.objects.get(id=post_id)
-        except track.DoesNotExist:
+        except post.DoesNotExist:
             raise GraphQLError('Cannot find post with this id')
         Like.objects.create(post=post,user_id=user.id)
         return CreateLike(user=user,post=post)
@@ -60,14 +60,16 @@ class UpdatePost(graphene.Mutation):
         post_id = graphene.Int(required=True)
         title = graphene.String()
         description = graphene.String()
+        post_image_url = graphene.String()
 
-    def mutate(self, info, post_id, title, description):
+    def mutate(self, info, post_id, title, description,post_image_url):
         user = info.context.user
         post = Post.objects.get(id=post_id)
         if post.posted_by != user:
             raise GraphQLError('You are Not Permitted to Update This Post')
         post.title = title
         post.description = description
+        post.post_image_url = post_image_url
         post.save()
         return UpdatePost(post=post)
 
