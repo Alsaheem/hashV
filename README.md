@@ -1,1 +1,2 @@
-Blog made with django rest framework and react
+my personalised hashing algorithm webapp...django and react
+
