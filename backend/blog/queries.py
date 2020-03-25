@@ -1,6 +1,7 @@
 import graphene
 from graphql import GraphQLError
 from graphene_django import DjangoObjectType
+from graphene_django.filter import DjangoFilterConnectionField
 from graphene import relay
 from .models import  Post,Category,Like
 
@@ -8,11 +9,13 @@ class PostType(DjangoObjectType):
     likes_count = graphene.String(source='likes_count')
     class Meta:
         model=Post
+        # Allow for some more advanced filtering here
+        filter_fields = {
+            'title': ['exact', 'icontains', 'istartswith'],
+            'description': ['exact', 'icontains', 'istartswith'],
+            'posted_by__username': ['exact', 'icontains']
+        }
         interfaces = (relay.Node, )
-
-class PostConnection(relay.Connection):
-    class Meta:
-        node = PostType
 
 class LikeType(DjangoObjectType):
     class Meta:
@@ -25,7 +28,7 @@ class CategoryType(DjangoObjectType):
 class Query(graphene.ObjectType):
     post = graphene.Field(PostType, id = graphene.Int(required=True))
     category = graphene.Field(CategoryType, id = graphene.Int(required=True))
-    posts = relay.ConnectionField(PostConnection)
+    posts = DjangoFilterConnectionField(PostType)
     likes = graphene.List(LikeType)
     categories = graphene.List(CategoryType)
 

@@ -22,7 +22,16 @@ class Query(graphene.ObjectType):
     def resolve_user(self,info,id):
         return User.objects.get(id=id)
 
-    def resolve_users(self,info):
+    def resolve_users(self,info,search=None):
+
+        if search:
+            filter =  (
+              Q(username__icontains=search) |
+              Q(firstName__icontains=search) |
+              Q(lastName__icontains=search) |
+              Q(email__icontains=search)
+            )
+            return User.objects.filter(filter)
         return User.objects.all()
 
     def resolve_me(self,info):
