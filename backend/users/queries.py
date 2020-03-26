@@ -16,7 +16,7 @@ class ProfileType(DjangoObjectType):
 
 class Query(graphene.ObjectType):
     user = graphene.Field(UserType,id = graphene.Int(required=True))
-    me = graphene.Field(ProfileType)
+    me = graphene.Field(UserType)
     users = graphene.List(UserType)
 
     def resolve_user(self,info,id):
@@ -38,4 +38,4 @@ class Query(graphene.ObjectType):
         user = info.context.user
         if user.is_anonymous:
           raise GraphQLError('You are not Logged In')
-        return Profile.objects.get(id=user.id)
+        return user
