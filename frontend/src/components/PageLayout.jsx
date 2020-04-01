@@ -8,10 +8,6 @@ const PageLayout = ({ children }) => {
   return (
     <div className="container">
       <Navbar/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
       {children}
       <Footer />
     </div>

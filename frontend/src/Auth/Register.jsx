@@ -39,7 +39,6 @@ const Register = ({ setNewUser }) => {
       >
         {(createUser, { loading, error }) => {
           if (loading) return <Loading />;
-          if (error) return <Error />;
 
           return (
             <form onSubmit={event => handleSubmit(event, createUser)}>
@@ -48,7 +47,7 @@ const Register = ({ setNewUser }) => {
               <SketchOutlined spin
                 style={{
                   fontSize: "50px",
-                  color: "#08c",
+                  color: "red",
                   paddingBottom: "30px"
                 }}
               />
@@ -81,12 +80,19 @@ const Register = ({ setNewUser }) => {
                 type="primary"
                 block
                 className="btn btn-sm btn-primary mb-3"
+                disabled={
+                  loading ||
+                  !username.trim() ||
+                  !email.trim() ||
+                  !password.trim()
+                }
               >
                 Register
               </Button>
               <Button block onClick={() => setNewUser(false)}>
                 Do You have an account --- Login
               </Button>
+              {error && <Error error={error} />}
             </form>
           );
         }}
@@ -100,8 +106,7 @@ const Register = ({ setNewUser }) => {
       >
         <p>user {username} has successfully registered</p>
         <p>
-          {" "}
-          Go to the login page{" "}
+          Go to the login page
           <Button onClick={() => setNewUser(false)}>Login</Button>
         </p>
       </Modal>

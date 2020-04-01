@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext } from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
@@ -31,6 +31,8 @@ const client = new ApolloClient({
 });
 
 
+export const isLoggedInContext = createContext();
+
 //to check if user is logged in
 const IS_LOGGED_IN = gql`
   query {
@@ -38,13 +40,15 @@ const IS_LOGGED_IN = gql`
   }
 `;
 
-console.log(IS_LOGGED_IN)
+console.log(IS_LOGGED_IN);
 
 ReactDOM.render(
   <ApolloProvider client={client}>
+    <isLoggedInContext.Provider value={!!localStorage.getItem("token")}>
     <Query query={IS_LOGGED_IN}>
       {({ data }) => (data.isLoggedIn ? <App /> : <Auth />)}
     </Query>
+    </isLoggedInContext.Provider>
   </ApolloProvider>,
   document.getElementById("root")
 );

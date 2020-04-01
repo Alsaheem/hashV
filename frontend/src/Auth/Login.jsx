@@ -9,14 +9,14 @@ import Success from "../shared/Success";
 import { SketchOutlined } from "@ant-design/icons";
 
 const Login = ({ setNewUser }) => {
-  const [username, setUsername] = useState("")
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (event, tokenAuth, client) => {
     event.preventDefault();
     const res = await tokenAuth();
     localStorage.setItem("token", res.data.tokenAuth.token);
-    client.writeData({ data: { isLoggedIn : true} });
+    client.writeData({ data: { isLoggedIn: true } });
   };
 
   return (
@@ -26,7 +26,7 @@ const Login = ({ setNewUser }) => {
       style={{ padding: "10px", marginTop: "50px", width: "400px" }}
     >
       <Mutation
-        mutation={LOGIN_MUTATION}
+        mutation={LOGIN_MUTATION }
         variables={{
           username: username,
           password: password
@@ -37,16 +37,17 @@ const Login = ({ setNewUser }) => {
       >
         {(tokenAuth, { loading, error, client, called }) => {
           if (loading) return <Loading />;
-          if (error) return <Error />;
+          if (error) return <div className="">Error</div>;
 
           return (
             <form onSubmit={event => handleSubmit(event, tokenAuth, client)}>
               <h2 className="text-white">Login</h2>
               <hr />
-              <SketchOutlined spin
+              <SketchOutlined
+                spin
                 style={{
                   fontSize: "50px",
-                  color: "#08c",
+                  color: "red",
                   paddingBottom: "30px"
                 }}
               />
@@ -78,6 +79,7 @@ const Login = ({ setNewUser }) => {
               <Button block onClick={() => setNewUser(true)}>
                 not Registered --- Register
               </Button>
+              {error && <Error error={error} />}
             </form>
           );
         }}

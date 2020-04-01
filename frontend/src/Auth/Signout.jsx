@@ -3,11 +3,11 @@ import { Button, Modal } from "antd";
 import { ApolloConsumer } from "react-apollo";
 
 const Signout = ({ classes }) => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   const handleOk = client => {
     setVisible(false)
-    localStorage.removeItem("authToken");
+    localStorage.removeItem("token");
     client.writeData({ data: { isLoggedIn: false } });
     console.log("Signed out user", client);
   };
@@ -25,14 +25,17 @@ const Signout = ({ classes }) => {
           signOut
         </Button>
         <Modal
-          title="Basic Modal"
+          title="Logout Modal"
           visible={visible}
-          onOk={() => handleOk(client)}
-          onCancel={handleCancel}
-          okButtonProps={{ disabled: true }}
-          cancelButtonProps={{ disabled: true }}
+            onOk={() => handleOk(client)}
+            onCancel={handleCancel}
+            okText="Yes..Logout"
+          cancelText="Cancel"
+
+          okButtonProps={{ disabled: false }}
+          cancelButtonProps={{ disabled: false }}
         >
-          <p>Some contents...</p>
+          <p>Do you really want to Logout ... :(</p>
           </Modal>
           </>
          )}

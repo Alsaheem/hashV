@@ -4,10 +4,15 @@ import "./Footer.css";
 const Footer = () => {
   return (
     <>
-      <div className="row" style={{ height: "100px", backgroundColor: "grey" }}>
-        <div className="col-4">Location</div>
-        <div className="col-4">Likes</div>
-        <div className="col-4">Developer</div>
+      <div className="row" style={{ backgroundColor: "grey", color: "white" }}>
+        <div className="col-6">
+          <h2>Leads</h2>
+          <p>
+            The standard chunk of Lorem Ipsum used since the 1500s is reproduced
+            below for those interested.{" "}
+          </p>
+        </div>
+        <div className="col-6">Likes</div>
       </div>
     </>
   );

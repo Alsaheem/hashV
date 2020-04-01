@@ -13,3 +13,29 @@ query {
   }
 }
 `;
+
+
+export const GET_POSTS_QUERY = gql`
+{
+  posts{
+    edges{
+      node{
+        id
+        title
+        createdAt
+        postImageUrl
+        category{
+          name
+        }
+        postedBy{
+          id
+          username
+        }
+        title
+        description
+        likesCount
+      }
+    }
+  }
+}
+`;
