@@ -4,6 +4,7 @@ from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 from graphene import relay
 from .models import  Post,Category,Like
+from django.db.models import Q
 
 class PostType(DjangoObjectType):
     likes_count = graphene.String(source='likes_count')
@@ -47,15 +48,17 @@ class Query(graphene.ObjectType):
 
     def resolve_myPosts(self,info):
         user_id = info.context.user.id
+        user = info.context.user
         if user.is_anonymous:
           raise GraphQLError('You are not Logged In')
-        return Post.objects.filter(id=user_id)
+        return Post.objects.filter(posted_by_id=user_id)
 
     def resolve_userPosts(self,info,**kwargs):
+        user = info.context.user
         user_id = kwargs.get('id')
         if user.is_anonymous:
           raise GraphQLError('You are not Logged In')
-        return Post.objects.filter(id=user_id)
+        return Post.objects.filter(posted_by_id=user_id)
 
     def resolve_likes(self,info):
       return Like.objects.all()
@@ -63,9 +66,9 @@ class Query(graphene.ObjectType):
     def resolve_categories(self,info):
         return Category.objects.all()
 
-    def resolve_categoryPosts(self,info,id):
+    def resolve_categoryPosts(self,info,id=None):
         if id is not None:
             category = Category.objects.get(id=id)
-            return Posts.objects.get(category=category)
+            return Post.objects.get(category=category)
         else:
             raise GraphQLError('No category with that id found')

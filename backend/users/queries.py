@@ -4,6 +4,7 @@ from graphql import GraphQLError
 from django.contrib.auth.models import User
 from graphene_django import DjangoObjectType
 from .models import Profile
+from django.db.models import Q
 
 class UserType(DjangoObjectType):
     class Meta:

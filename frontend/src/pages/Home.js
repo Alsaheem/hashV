@@ -12,10 +12,10 @@ const Home = () => {
     <PageLayout>
       <br />
       <br />
-      <div class=" py-5">
-        <div class="row">
-          <div class="col-lg-7 mx-auto">
-            <ul class="timeline">
+      <div className=" py-5">
+        <div className="row">
+          <div className="col-lg-7 mx-auto">
+            <ul className="timeline">
               <Query
                 query={GET_POSTS_QUERY}
               >
